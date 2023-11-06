@@ -1,0 +1,314 @@
+TCP Chat
+Server
+from socket import *
+
+s = socket(AF_INET,SOCK_STREAM)
+
+s.bind(("",8000))
+
+s.listen(5)
+
+c,a = s.accept()
+
+data="Enter the operations that you are going to perform"
+
+while(True):
+
+   
+    x=c.recv(100).decode()
+
+    if(x=="bye"):
+        print("Finished")
+        break
+    print(x)
+    data=input()
+    c.send(data.encode('utf-8'))
+
+c.close()
+
+Client
+from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+
+s.connect(("127.0.0.1",8000)) # Connect
+
+while(True):
+   
+    a=input()
+    s.send(a.encode('utf-8'))  
+   
+    if a=='bye':
+        print("Finished")
+        break
+    data = s.recv(100).decode()
+    print(data)
+
+s.close()
+
+TCP Ping
+
+Server:
+from socket import *
+
+s = socket(AF_INET,SOCK_STREAM)
+
+s.bind(("",8000))
+
+s.listen(5)
+
+while True:
+
+    c,a = s.accept()
+
+    print("Received connection from", a)
+
+    data="Server is Active"
+
+    c.send(data.encode('utf-8'))
+
+c.close()
+
+Client
+from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+
+s.connect(("127.0.0.1",8000))
+
+data = s.recv(100).decode()
+
+print(data)
+
+s.close()
+
+TCP Echo
+
+Server
+from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+
+s.connect(("127.0.0.1",8000))
+
+data = s.recv(100).decode()
+
+print(data)
+
+s.close()
+
+Client
+from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+
+s.connect(("127.0.0.1",8000))
+
+data = s.recv(100).decode()
+
+print(data)
+
+s.close()
+
+
+
+
+
+
+
+
+
+
+
+UDP echo
+Server
+from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+
+s.connect(("127.0.0.1",8000))
+
+data = s.recv(100).decode()
+
+print(data)
+
+s.close()
+
+Client
+
+from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+
+s.connect(("127.0.0.1",8000))
+
+data = s.recv(100).decode()
+
+print(data)
+
+s.close()
+
+
+UDP Chat
+
+Server
+import socket
+
+s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+
+s.bind(('', 12000))
+
+while True:
+
+    x,addr=s.recvfrom(1024)
+    x=x.decode()
+    #print(x)
+
+    if x=='bye':
+        print("Finished")
+        break
+    print(x)
+    data=input()
+    s.sendto(data.encode('utf-8'),addr)
+s.close
+   
+       
+client
+import socket
+
+s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+
+s.bind(('', 12000))
+
+while True:
+
+    x,addr=s.recvfrom(1024)
+    x=x.decode()
+    #print(x)
+
+    if x=='bye':
+        print("Finished")
+        break
+    print(x)
+    data=input()
+    s.sendto(data.encode('utf-8'),addr)
+s.close
+   
+       
+
+
+
+
+
+
+
+
+
+File transferring Protocol
+Server
+from socket import *
+
+s = socket(AF_INET,SOCK_STREAM)
+
+s.bind(("",8000))
+
+s.listen(5)
+
+with open(r"C:\Users\bhuva\Desktop\hi.txt") as file:
+    data = file.read()
+
+c,a = s.accept()
+
+print("Received connection from", a)
+
+c.send(data.encode('utf-8'))
+
+c.close()
+
+Client
+from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+
+s.connect(("127.0.0.1",8000)) # Connect
+
+data = s.recv(100).decode()# Get response
+
+print(data)
+
+file = open(r"C:\Users\bhuva\Desktop\hello.txt",'w')
+
+file.write(data)
+
+file.close()
+
+s.close()
+
+
+
+CALCULATOR
+server
+from socket import *
+
+s = socket(AF_INET,SOCK_STREAM)
+
+s.bind(("",8000))
+
+s.listen(5)
+
+c,a = s.accept()
+
+data="Enter the operations that you are going to perform"
+
+while(True):
+
+   
+    x=c.recv(100).decode()
+
+    y=c.recv(100).decode()
+
+    z=c.recv(100).decode()
+
+    if z=='+':
+       a=int(x)+int(y)
+       c.send(str(a).encode('utf-8'))
+    elif z=='-':
+        a=int(x)-int(y)
+        c.send(str(a).encode('utf-8'))
+    elif z=='*':
+        a=int(x)*int(y)
+        c.send(str(a).encode('utf-8'))
+    elif z=='/':
+        a=int(x)/int(y)
+        c.send(str(a).encode('utf-8'))
+    elif z=='!':
+        break
+
+c.send(z.encode('utf-8'))
+
+c.close()
+
+Client
+from socket import *
+
+s = socket(AF_INET, SOCK_STREAM)
+
+s.connect(("127.0.0.1",8000)) # Connect
+
+while(True):
+   
+    a=int(input("enter the number"))
+    s.send(str(a).encode('utf-8'))  
+    b=int(input("enter the number"))
+    s.send(str(b).encode('utf-8'))
+    c=input("enter the symbol")
+    s.send(c.encode('utf-8'))
+   
+    data = s.recv(100).decode()
+    if data=='!':
+        print("Finished")
+        break
+    else:
+        print("The answer is",data)
+
+s.close()
